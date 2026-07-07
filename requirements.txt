@@ -1,0 +1,19 @@
+# wamiqsec-ReconMind Phase 2 — Python Dependencies
+# Install with: pip install -r requirements.txt
+
+# HTTP client — backbone of all probe requests
+requests>=2.31.0
+
+# HTML parsing — robust parser for parameter extraction
+beautifulsoup4>=4.12.0
+
+# Fast HTML parser backend for BeautifulSoup
+lxml>=4.9.0
+
+# SSL warning suppression
+urllib3>=2.0.0
+
+# Standard library modules (no install needed — listed for documentation):
+#   re, urllib.parse, json, sqlite3, dataclasses, pathlib,
+#   argparse, logging, time, sys, os, subprocess, base64,
+#   contextlib, datetime, difflib, asyncio
