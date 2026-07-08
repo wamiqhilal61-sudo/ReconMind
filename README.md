@@ -1,57 +1,144 @@
 # ReconMind
 
-**Intelligent Bug Hunting & Reconnaissance Framework**
+> Intelligent Python-based Offensive Security Reconnaissance & Vulnerability Assessment Framework
 
-> For authorized security testing and educational use only.
-> Never test targets without explicit written permission.
+ReconMind is a modular reconnaissance and vulnerability assessment framework built for authorized security testing and bug bounty research.
+
+Unlike traditional diff-based scanners, ReconMind focuses on **context-aware analysis**, **response intelligence**, and **confidence-based validation** to reduce false positives while assisting security researchers in identifying real security issues.
 
 ---
 
-## Phase 1 — Parameter Extraction & Reflection Analysis
+## Features
 
-### What Phase 1 Does
+### Intelligent Recon Engine
+
+- Smart URL crawling
+- Parameter discovery
+- Reflection detection
+- Response collection
+- Automatic parameter mutation
+- Passive reconnaissance
+- Active reconnaissance
+
+---
+
+### Supported Modules
+
+- Reflected XSS
+- IDOR
+- SQL Injection
+- SSRF
+- LFI
+- Open Redirect
+- Reflection Analysis
+
+---
+
+### Phase 5 XSS Intelligence
+
+ReconMind includes an intelligent XSS validation pipeline featuring:
+
+- Context Detection Engine
+- Reflection Classification
+- Encoding Detection
+- Breakout Analysis
+- Exploitability Scoring
+- Confidence Engine
+- Context-Aware Payload Selection
+- Evidence-Based Reporting
+
+Instead of reporting every reflection, ReconMind evaluates whether a reflection is actually exploitable.
+
+---
+
+## Scanner Architecture
 
 ```
-User Input (URL or file)
-        │
-        ▼
-┌─────────────────────┐
-│   URL Handler       │  Normalize, validate, deduplicate
-└────────┬────────────┘
-         │  URLTarget objects
-         ▼
-┌─────────────────────┐
-│  Param Extractor    │  GET / POST / Hidden / JSON params
-└────────┬────────────┘
-         │  URLTarget with .parameters
-         ▼
-┌─────────────────────┐
-│ Reflection Engine   │  Inject XSS123TEST → check response
-└────────┬────────────┘
-         │  List[ReflectionResult]
-         ▼
-┌─────────────────────┐
-│ Context Analyzer    │  JS? HTML attr? Comment? JSON?
-└────────┬────────────┘
-         │  List[ContextAnalysis]
-         ▼
-┌─────────────────────┐
-│  Risk Scorer        │  Additive score → HIGH/MEDIUM/LOW
-└────────┬────────────┘
-         │  List[ScoredFinding]
-         ▼
-┌─────────────────────┐
-│  CLI Reporter       │  Colored terminal output
-└─────────────────────┘
+ReconMind
+│
+├── Passive Recon
+├── Active Recon
+├── Smart Crawler
+├── Parameter Extraction
+├── Response Intelligence
+│
+├── Reflection Module
+├── XSS Engine
+├── SQLi Module
+├── IDOR Module
+├── SSRF Module
+├── LFI Module
+├── Redirect Module
+│
+├── Confidence Engine
+├── Similarity Engine
+├── Baseline Calibration
+├── Response Normalization
+│
+├── Reporting
+└── SQLite Database
 ```
+
+---
+
+## Current Development
+
+Current Phase
+
+**Phase 5 — Intelligent XSS Validation**
+
+Completed:
+
+- Smart Recon Engine
+- Reflection Detection
+- Response Intelligence
+- Similarity Engine
+- Confidence Scoring
+- Context Detection
+- Breakout Analyzer
+- Encoding Detection
+- Evidence Models
+- Database Integration
+- JSON Reporting
+- Markdown Reporting
+
+---
+
+## Planned Roadmap
+
+### Phase 6
+
+- DOM XSS
+- Blind XSS
+- Better SQLi Validation
+- Better SSRF Validation
+- Improved IDOR Validation
+
+### Phase 7
+
+- GraphQL Security
+- JWT Analysis
+- API Security
+- SSTI Detection
+- XXE Detection
+
+### Phase 8
+
+- Plugin System
+- Parallel Scanning
+- Custom Detection Rules
+- Machine Learning Assisted Prioritization
+- Interactive Dashboard
 
 ---
 
 ## Installation
 
 ```bash
-git clone <repo>
+git clone https://github.com/wamiqhilal61-sudo/ReconMind.git
+
 cd ReconMind
+
 pip install -r requirements.txt
 ```
 
@@ -59,133 +146,73 @@ pip install -r requirements.txt
 
 ## Usage
 
+Single URL
+
 ```bash
-# Single URL
 python main.py -u "https://example.com/search?q=test"
+```
 
-# File of URLs (one per line)
-python main.py -f targets.txt
+Debug Mode
 
-# Route through Burp Suite proxy
-python main.py -u "https://example.com/search?q=test" --proxy http://127.0.0.1:8080
-
-# Debug logging
+```bash
 python main.py -u "https://example.com/search?q=test" --debug
+```
 
-# Disable color (pipe to file)
-python main.py -f targets.txt --no-color > results.txt
+Proxy through Burp Suite
 
-# Custom timeout
-python main.py -f targets.txt --timeout 30
+```bash
+python main.py -u "https://example.com/search?q=test" --proxy http://127.0.0.1:8080
+```
+
+Save JSON Report
+
+```bash
+python main.py -f urls.txt --save-json
 ```
 
 ---
 
-## Folder Structure
+## Philosophy
 
-```
-ReconMind/
-│
-├── main.py                     ← Pipeline orchestrator & CLI entry point
-│
-├── config/
-│   └── settings.py             ← All configuration (timeouts, weights, thresholds)
-│
-├── core/
-│   ├── recon/
-│   │   └── url_handler.py      ← URL normalization, validation, deduplication
-│   ├── extractor/
-│   │   └── param_extractor.py  ← GET/POST/Hidden/JSON parameter extraction
-│   ├── analyzer/
-│   │   └── context_analyzer.py ← Reflection context classification
-│   ├── scoring/
-│   │   └── risk_scorer.py      ← Additive risk scoring engine
-│   ├── reporting/
-│   │   └── cli_reporter.py     ← Colored CLI output
-│   └── utils/
-│       ├── logger.py           ← Centralized logging factory
-│       └── http_client.py      ← Shared HTTP session
-│
-├── modules/
-│   ├── reflection/
-│   │   └── reflection_engine.py ← Marker injection & response analysis
-│   ├── xss/                    ← Phase 2: XSS payload testing
-│   ├── redirects/              ← Phase 2: Open redirect testing
-│   ├── lfi/                    ← Phase 2: LFI testing
-│   ├── ssrf/                   ← Phase 2: SSRF testing
-│   └── idor/                   ← Phase 2: IDOR detection
-│
-├── database/                   ← Phase 2: SQLite finding storage
-├── reports/                    ← Output directory for scan artifacts
-└── requirements.txt
-```
+ReconMind is designed around one principle:
+
+> Detect evidence, not differences.
+
+Instead of assuming that every response difference indicates a vulnerability, ReconMind evaluates multiple signals before assigning a confidence score.
+
+This approach significantly reduces false positives and provides more actionable findings.
 
 ---
 
-## Data Flow — How Modules Communicate
+## Technologies
 
-Every module in the pipeline exchanges **typed data objects** — not raw
-strings or dictionaries. This is the key architectural decision.
-
-| Object | Created by | Consumed by |
-|--------|-----------|-------------|
-| `URLTarget` | `url_handler.py` | `param_extractor`, `reflection_engine`, `reporter` |
-| `Parameter` | `param_extractor.py` | `reflection_engine`, `scorer`, `reporter` |
-| `ReflectionResult` | `reflection_engine.py` | `context_analyzer`, `scorer` |
-| `ContextAnalysis` | `context_analyzer.py` | `risk_scorer`, `reporter` |
-| `ScoredFinding` | `risk_scorer.py` | `cli_reporter` |
+- Python
+- Requests
+- BeautifulSoup
+- SQLite
+- Git
+- Burp Suite
+- OWASP Methodologies
 
 ---
 
-## Risk Scoring Weights (Phase 1)
+## Disclaimer
 
-| Signal | Points |
-|--------|--------|
-| Input reflected in response | +20 |
-| Reflection not HTML-encoded | +30 |
-| JavaScript execution context | +50 |
-| Dangerous JS sink nearby (eval, innerHTML) | +40 |
-| HTML attribute context | +25 |
-| Event handler attribute | +20 (bonus) |
-| JSON response context | +15 |
-| HTML comment context | +10 |
-| Multiple reflections | +5 per occurrence (max +20) |
-| Header reflection | +15 |
+ReconMind is intended **only for authorized security testing, educational purposes, and bug bounty programs that explicitly permit automated testing.**
 
-**Severity thresholds:**
-- `≥ 70` → **HIGH** — Likely exploitable, investigate immediately
-- `≥ 40` → **MEDIUM** — Investigate this session
-- `≥ 10` → **LOW** — Document and retest
-- `< 10` → **INFO** — Not actionable alone
-
-All weights are tunable in `config/settings.py`.
+Do **not** use this tool against systems without permission.
 
 ---
 
-## Extending the Framework
+## Author
 
-### Adding a new vulnerability module (Phase 2+)
+**Wamiq Hilal**
 
-1. Create your module file: `modules/xss/xss_tester.py`
-2. Import `ScoredFinding` from `core.scoring.risk_scorer`
-3. Import `URLTarget` from `core.recon.url_handler`
-4. Define a `run(target: URLTarget) -> List[ScoredFinding]` function
-5. Import and call it from `main.py` after the reflection stage
+- Offensive Security Enthusiast
+- Web Application Security
+- Bug Bounty Research
+- B.Tech Computer Science
 
-The shared `SESSION` from `core.utils.http_client` handles all HTTP.
-The `CONFIG` singleton from `config.settings` handles all configuration.
-The `get_logger(__name__)` from `core.utils.logger` handles all logging.
+GitHub
 
----
-
-## Legal Notice
-
-ReconMind is designed for:
-- Authorized penetration testing engagements
-- Bug bounty programs with defined scope
-- Security research in lab environments you own
-- Educational study of web vulnerability classes
-
-Using this tool against systems you do not have explicit permission to
-test is illegal under the Computer Fraud and Abuse Act (US), the
-Computer Misuse Act (UK), and equivalent laws worldwide.
+https://github.com/wamiqhilal61-sudo
